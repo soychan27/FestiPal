@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>메인 화면</title>
+    <style>
+        .center {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .welcome-message {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="center">
+    <h1>FestiPal</h1>
+    <div class="buttons">
+        <button onclick="location.href='/user/login'">로그인</button>
+        <button onclick="location.href='/user/join'">회원가입</button>
+        <button onclick="location.href='/board/list'">게시판</button>
+    </div>
+    <div class="welcome-message" th:if="${loggedIn}">
+        환영합니다, <span th:text="${username}">사용자</span>님!
+        <button onclick="location.href='/user/logout'">로그아웃</button>
+    </div>
+    <div class="welcome-message" th:if="${!loggedIn}">
+        로그인되지 않았습니다.
+    </div>
+</div>
+</body>
+</html>

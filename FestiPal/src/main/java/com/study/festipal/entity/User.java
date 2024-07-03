@@ -20,6 +20,4 @@ public class User {
 
     private String phone;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<board> boards;
 }
