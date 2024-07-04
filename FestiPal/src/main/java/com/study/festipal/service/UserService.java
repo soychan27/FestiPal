@@ -15,7 +15,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User findById(String id){
-        return userRepository.findById(id).orElse(null);
+    public User login(User user) {
+        return userRepository.findByIdAndPassword(user.getId(), user.getPassword());
     }
 }

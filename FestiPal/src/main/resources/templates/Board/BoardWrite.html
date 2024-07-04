@@ -3,35 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <title>게시글 쓰기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 200px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .checkbox {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .checkbox label {
+            margin-left: 10px;
+        }
+    </style>
 </head>
-<style>
-    .layout{
-        width : 500px;
-        margin : 0 auto;
-        margin-top : 40px;
-    }
-    /*layout 하위에 있는 input에 준다는 의미였기에 > 제거*/
-    .layout input{
-        width : 100%;
-        box-sizing : border-box
-    }
-
-    .layout textarea {
-        width : 100%;
-        margin-top : 10px;
-        min-height : 300px;
-    }
-</style>
-
 <body>
-<div class="layout">
-    <form action ="/board/writepro" method = "post" enctype="multipart/form-data">
-        <input name = "title" type="text">
-        <textarea name = "content"></textarea>
+<div class="container">
+    <form action="/board/writepro" method="post" enctype="multipart/form-data">
+        <input name="title" type="text" placeholder="제목">
+        <textarea name="content" placeholder="내용"></textarea>
         <input type="file" name="file">
-        <button type = "submit">작성</button>
+        <div class="checkbox">
+            <input type="checkbox" name="boardcheck" value="true" id="boardcheck">
+            <label for="boardcheck">게시글 체크</label>
+        </div>
+        <button type="submit">작성</button>
     </form>
 </div>
-
 </body>
 </html>
