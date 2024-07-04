@@ -5,9 +5,9 @@ import com.study.festipal.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.ui.Model;
 
 @Controller
 public class UserController {
@@ -38,19 +38,18 @@ public class UserController {
 
     //로그인 처리
     @PostMapping("/user/loginpro")
-    public String UserLoginPro(String id, String password, Model model, HttpSession session){
-        User user = userService.findById(id);
-        if (user != null && user.getPassword().equals(password)){
-            session.setAttribute("user",user);
-            model.addAttribute("message", "로그인 성공하였습니다.");
+    public String userLoginPro(User user, HttpSession session, Model model) {
+        User loginUser = userService.login(user);
+        if (loginUser != null) {
+            session.setAttribute("user", loginUser);
+            model.addAttribute("message", "로그인 성공");
             model.addAttribute("searchUrl", "/main");
+            return "message";
         } else {
-            model.addAttribute("message", "로그인에 실패하였습니다. 아이디 또는 비밀번호를 확인해주세요.");
+            model.addAttribute("message", "로그인 실패");
             model.addAttribute("searchUrl", "/user/login");
+            return "message";
         }
-
-        return "message";
-
     }
 
     @GetMapping("/user/logout")
