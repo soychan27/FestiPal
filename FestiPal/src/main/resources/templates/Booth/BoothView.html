@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 60%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .actions {
+            margin-top: 20px;
+        }
+        .actions a, .actions img {
+            margin-right: 10px;
+        }
+        .actions a {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .actions img {
+            max-width: 100%;
+            height: auto;
+        }
+        .actions a:hover {
+            background-color: #0056b3;
+        }
+        .actions form {
+            display: inline;
+        }
+        .actions form button {
+            padding: 10px 15px;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .actions form button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${booth.title}">제목입니다</h1>
+    <p th:text="'작성자: ' + ${booth.user.name}">작성자</p>  <!-- 작성자 표시 -->
+    <p th:text="'작성 시간: ' + ${#temporals.format(booth.createdTime, 'yyyy-MM-dd HH:mm:ss')}">작성 시간</p>
+    <p th:text="${booth.content}">내용이 들어갈 부분입니다.</p>
+    <div class="actions">
+        <img th:if="${booth.imagepath != null}" th:src="@{${booth.imagepath}}" alt="이미지 파일" />
+        <div class = "spacer"></div>
+        <a th:if="${booth.imagepath != null}" th:href="@{${booth.imagepath}}">다운받기</a>
+        <a th:if="${isAuthor}" th:href="@{/booth/modify/{id}(id=${booth.id})}">수정</a>
+        <form th:if="${isAuthor} or ${isAdmin}" th:action="@{/booth/delete/{id}(id=${booth.id})}" method="post">
+            <button type="submit">글삭제</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -3,6 +3,7 @@ package com.study.festipal.controller;
 import com.study.festipal.entity.User;
 import com.study.festipal.entity.board;
 import com.study.festipal.service.BoardService;
+import com.study.festipal.service.ReplyService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,8 +17,12 @@ import java.time.LocalDateTime;
 
 @Controller
 public class BoardController {
+
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private ReplyService replyService;
 
     @GetMapping("/board/write")
     public String boardWrite(HttpSession session, Model model) {
@@ -62,6 +67,8 @@ public class BoardController {
 
         model.addAttribute("board", board);
         model.addAttribute("isAuthor", user != null && user.getId().equals(board.getUser().getId()));
+        model.addAttribute("isAdmin", user != null && user.getAuthority() == 2); // 관리자 권한 확인
+        model.addAttribute("replies", replyService.findAllByBoardId(id)); // 댓글 리스트 추가
         return "Board/BoardView";
     }
 
@@ -70,7 +77,7 @@ public class BoardController {
         board board = boardService.boardView(id);
         User user = (User) session.getAttribute("user");
 
-        if (user == null || !user.getId().equals(board.getUser().getId())) {
+        if (user == null || (!user.getId().equals(board.getUser().getId()) && user.getAuthority() != 2)) {
             model.addAttribute("message", "삭제 권한이 없습니다.");
             model.addAttribute("searchUrl", "/board/list");
             return "message";
@@ -79,6 +86,7 @@ public class BoardController {
         boardService.boardDelete(id);
         return "redirect:/board/list";
     }
+
 
     @GetMapping("/board/modify/{id}")
     public String boardModify(@PathVariable("id") Integer id, Model model, HttpSession session) {

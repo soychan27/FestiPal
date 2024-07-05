@@ -9,29 +9,23 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class booth {
+public class reply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userid", nullable = false)
     private User user;
 
-    private String title;
 
-    private String imagename;
-
-    private String imagepath;
-
-    private String number;
-
-    private LocalDateTime createdTime;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "boardid", nullable = false)
+    private board board;
 
     private String content;
 
-    public booth(){
-        this.imagename = null;
-        this.imagepath = null;
-    }
+    private LocalDateTime createdTime;
+
 }
