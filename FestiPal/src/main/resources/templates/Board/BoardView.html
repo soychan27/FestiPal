@@ -58,6 +58,43 @@
         .actions form button:hover {
             background-color: #c82333;
         }
+        .comments {
+            margin-top: 40px;
+        }
+        .comments h2 {
+            color: #555;
+        }
+        .comment {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 0.9em; /* 댓글 폰트 크기 줄이기 */
+        }
+        .comment .author {
+            font-weight: bold;
+        }
+        .comment-form {
+            margin-top: 20px;
+        }
+        .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .comment-form button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .comment-form button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -69,10 +106,34 @@
     <p th:text="'게시글 체크: ' + (${board.boardcheck} ? '체크됨' : '체크되지 않음')">게시글 체크 상태</p> <!-- boardcheck 상태 표시 -->
     <div class="actions">
         <img th:if="${board.imagepath != null}" th:src="@{${board.imagepath}}" alt="이미지 파일" />
+        <div class = "spacer"></div>
         <a th:if="${board.imagepath != null}" th:href="@{${board.imagepath}}">다운받기</a>
         <a th:if="${isAuthor}" th:href="@{/board/modify/{id}(id=${board.id})}">수정</a>
-        <form th:if="${isAuthor}" th:action="@{/board/delete/{id}(id=${board.id})}" method="post">
+        <form th:if="${isAuthor} or ${isAdmin}" th:action="@{/board/delete/{id}(id=${board.id})}" method="post">
             <button type="submit">글삭제</button>
+        </form>
+    </div>
+
+    <div class="comments">
+        <h2>댓글</h2>
+        <div th:each="reply : ${replies}">
+            <div class="comment">
+                <p class="author" th:text="${reply.user.name}">작성자</p>
+                <p th:text="${reply.content}">댓글 내용</p>
+                <p th:text="${#temporals.format(reply.createdTime, 'yyyy-MM-dd HH:mm:ss')}">작성 시간</p>
+                <form th:if="${isAuthor} or ${isAdmin}" th:action="@{/reply/delete/{id}(id=${reply.id})}" method="post">
+                    <button type="submit">댓글삭제</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 댓글 작성 폼 -->
+    <div class="comment-form">
+        <form th:action="@{/reply/add}" method="post">
+            <input type="hidden" name="boardid" th:value="${board.id}">
+            <textarea name="content" rows="4" placeholder="댓글을 작성하세요..."></textarea>
+            <button type="submit">댓글 작성</button>
         </form>
     </div>
 </div>
