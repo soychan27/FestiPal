@@ -50,6 +50,7 @@
 </head>
 <body>
 <div class="container">
+    <h2>글 수정하기</h2>
     <form th:action="@{/booth/modifypro/{id}(id=${booth.id})}" method = "post">
         <input type ="hidden" name="user.id" th:value="${booth.user.id}">
         <input name ="title" type="text" th:value="${booth.title}">
